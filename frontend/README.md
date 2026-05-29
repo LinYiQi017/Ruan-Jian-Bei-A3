@@ -18,6 +18,8 @@
 | **Axios** | 易用、成熟的 Promise 网络请求库 | 已封装统一的拦截器体系（支持自动携带 Bearer Token） |
 | **VueUse** | 实用的 Vue Composition API 工具集 | 提供数十种开箱即用的响应式浏览器 API 封装 |
 | **Lucide Vue** | 极简主义、现代化线条图标库 | 补充 Element Plus 以外的个性化高颜值图标 |
+| **Vitest** | Vite 生态首选的高性能测试框架 | 用于极速进行组件单元测试、数据流与状态测试 |
+| **Happy DOM** | 轻量级、超高速的浏览器 API 模拟器 | 为测试运行提供沙箱化的虚拟浏览器 DOM 环境 |
 
 ---
 
@@ -33,13 +35,14 @@ frontend/
 │   ├── components/      # 通用/可复用 UI 业务组件
 │   ├── router/          # Vue Router 路由配置 (src/router/index.ts)
 │   ├── stores/          # Pinia 全局状态存储 (src/stores/counter.ts)
+│   │   └── counter.test.ts # 单元测试文件示例
 │   ├── utils/           # 通用工具函数与网络请求 (src/utils/request.ts)
 │   ├── views/           # 页面级组件 (HomeView, AboutView 等)
 │   ├── App.vue          # 单页面入口骨架 Shell
 │   ├── main.ts          # 脚手架挂载与库注册入口
 │   └── style.css        # Tailwind CSS 及全局样式声明
 ├── tsconfig.json        # TypeScript 编译配置
-├── vite.config.ts       # Vite 配置文件（已集成 Tailwind 与 @/ 别名）
+├── vite.config.ts       # Vite 配置文件（已集成 Tailwind、Vitest 与 @/ 别名）
 └── package.json         # 项目依赖及运行指令
 ```
 
@@ -65,6 +68,44 @@ export const useCounterStore = defineStore('counter', () => {
 
 ### 3. 网络请求 (Axios Wrapper)
 预置的 `src/utils/request.ts` 会自动拦截请求并在 `Authorization` 头中附加 `localStorage` 内的 `token`。
+
+---
+
+## 🧪 测试与质量保障
+
+项目已原生集成 **Vitest** + **Happy DOM** 测试环境，且配置了全局类型支持。
+
+### 运行测试
+* **实时监听模式** (开发时代码保存自动重测)：
+  ```bash
+  npm run test
+  ```
+* **单次运行模式** (用于持续集成与代码发布前自检)：
+  ```bash
+  npm run test:run
+  ```
+
+### 编写测试用例
+测试文件推荐存放在所测试的源文件同级或邻级，并以 `*.test.ts` 或 `*.spec.ts` 命名。
+例如项目中预置的 **Pinia Store 单元测试** (`src/stores/counter.test.ts`)：
+```ts
+import { describe, it, expect, beforeEach } from 'vitest'
+import { setActivePinia, createPinia } from 'pinia'
+import { useCounterStore } from './counter'
+
+describe('Counter Store', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia())
+  })
+
+  it('increments the count', () => {
+    const counter = useCounterStore()
+    expect(counter.count).toBe(0)
+    counter.increment()
+    expect(counter.count).toBe(1)
+  })
+})
+```
 
 ---
 
