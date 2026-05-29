@@ -1,0 +1,26 @@
+# Set default behavior to automatically handle line endings
+* text=auto eol=lf
+
+# Explicitly declare files that are always text and should use LF line endings
+*.vue text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.json text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+*.md text eol=lf
+*.svg text eol=lf
+
+# Denote binary files which should not be modified by Git's line ending system
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
